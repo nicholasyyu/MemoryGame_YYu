@@ -47,6 +47,25 @@ var oneStar = 30;
 var twoStar = 50;
 var modal = document.getElementById('myModal');
 var span = document.getElementsByClassName("close")[0];
+
+var sec = 0;
+
+function pad ( val ) { return val > 9 ? val : "0" + val; };
+
+var startTimer = function(){
+  $("#seconds").html(pad(++sec%60));
+  $("#minutes").html(pad(parseInt(sec/60,10)));
+};
+var timer = setInterval( startTimer, 1000);
+
+function resetTimer(){
+  clearInterval(timer);
+  sec = 0;
+  $("#seconds").html(pad(sec%60));
+  $("#minutes").html(pad(parseInt(sec/60,10)));
+  timer = setInterval( startTimer, 1000);
+};
+
 // Checks if card is a valid move (if it not currently matched or open)
 function isValid(card){
     if(card.hasClass("open") || card.hasClass("match")){
@@ -76,7 +95,7 @@ function checkCard(){
     return 0;
   }
 
-}
+};
 
 var cardOpen = function keepCardOpen(card){
   openLog.forEach(function(card){
@@ -84,7 +103,7 @@ var cardOpen = function keepCardOpen(card){
     openedCard++;
   });
   openLog = [];
-}
+};
 
 var cardClose = function keepCardClose(card){
   openLog.forEach(function(card){
@@ -92,7 +111,7 @@ var cardClose = function keepCardClose(card){
     card.toggleClass("show");
   });
   openLog = [];
-}
+};
 
 function shuffleCards(){
   cardNames = shuffle(cardNames);
@@ -101,7 +120,7 @@ function shuffleCards(){
     $(this).attr("class", "fa " + cardNames[i]);
     i++;
   });
-}
+};
 
 var resetGame = function(){
   openLog = [];
@@ -111,17 +130,18 @@ var resetGame = function(){
   resetStars();
   $(".card").attr("class", "card");
   shuffleCards();
-}
+  resetTimer();
+};
 
 function updateStars(){
   if(step === oneStar || step === twoStar){
     $(".fa-star").last().attr("class", "fa fa-star-o");
   }
-}
+};
 
 function resetStars(){
   $(".fa-star-o").attr("class", "fa fa-star");
-}
+};
 
 
 // detect click on cards.
@@ -144,6 +164,7 @@ $(".card").click(function(){
         setTimeout(cardOpen, 300);
         //$('#myModal').show("block");
         if(openedCard === 16){
+          clearInterval(timer);
           modal.style.display = "block";
         }
       }
@@ -167,5 +188,4 @@ $(".card").click(function(){
 });
 
 $(".restart").click(resetGame);
-
 $(shuffleCards);
