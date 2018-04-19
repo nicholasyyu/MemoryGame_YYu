@@ -53,16 +53,16 @@ var sec = 0;
 function pad ( val ) { return val > 9 ? val : "0" + val; };
 
 var startTimer = function(){
-  $("#seconds").html(pad(++sec%60));
-  $("#minutes").html(pad(parseInt(sec/60,10)));
+  $(".seconds").text(pad(++sec%60));
+  $(".minutes").text(pad(parseInt(sec/60,10)));
 };
 var timer = setInterval( startTimer, 1000);
 
 function resetTimer(){
   clearInterval(timer);
   sec = 0;
-  $("#seconds").html(pad(sec%60));
-  $("#minutes").html(pad(parseInt(sec/60,10)));
+  $(".seconds").text(pad(sec%60));
+  $(".minutes").text(pad(parseInt(sec/60,10)));
   timer = setInterval( startTimer, 1000);
 };
 
@@ -143,6 +143,10 @@ function resetStars(){
   $(".fa-star-o").attr("class", "fa fa-star");
 };
 
+function playAgain(){
+  resetGame();
+  modal.style.display = "none";
+};
 
 // detect click on cards.
 $(".card").click(function(){
@@ -188,4 +192,5 @@ $(".card").click(function(){
 });
 
 $(".restart").click(resetGame);
+$(".play-again").click(playAgain);
 $(shuffleCards);
